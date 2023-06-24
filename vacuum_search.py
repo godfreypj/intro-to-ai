@@ -108,36 +108,51 @@ class VacuumAgent:
 
 
 class VacuumWorldPrinter:
-    "A module to give us a visual representation of the vacuum world"
+    """A class to provide a visual representation of the vacuum world."""
 
     def __init__(self):
         self.depth_limit = 0
 
-    def print_state(self, state):
-        "Outputs the current state"
+    def print_state(self, state, current_agent_position):
+        """Prints the current state of the vacuum world with the agent's position."""
         print("Current state:")
-        for row in state:
-            print(row)
+        self._print_grid(state, current_agent_position)
         print()
 
+    def _print_grid(self, state, current_agent_position):
+        """Prints the grid representation of the vacuum world with the agent's position."""
+        line = "+---+---+\n"
+        for i, row in enumerate(state):
+            print(line + "|", end="")
+            for j, cell in enumerate(row):
+                if (i, j) == current_agent_position:
+                    print(" @ ", end="|")
+                elif cell:
+                    print(" * ", end="|")
+                else:
+                    print(" 0 ", end="|")
+            print("\n", end="")
+        print(line)
+
     def print_depth_limit(self):
-        "Outputs the current depth limit"
+        """Prints the current depth limit of the search."""
         print("Depth limit:", self.depth_limit)
         print("------------------------------------")
 
     def increase_depth_limit(self):
-        "Iterates depths limit, separate from dfs method"
+        """Increases the depth limit counter."""
         self.depth_limit += 1
 
 
 # Using our vacuum class:
 # Instantiate a new agent, Set an initial state, Instantiate a new printer
 agent = VacuumAgent()
-initial_state = [[True, True], [True, False]]
+initial_state = [[True, True], [True, True]]
 printer = VacuumWorldPrinter()
 
 # Print initial state
-printer.print_state(initial_state)
+agent_position = agent.find_agent_position(initial_state)
+printer.print_state(initial_state, agent_position)
 printer.print_depth_limit()
 
 # Run the search
@@ -149,8 +164,9 @@ else:
     print("Actions to reach the goal state:")
     for action in result:
         new_state = agent.apply_action(initial_state, action)
+        agent_position = agent.find_agent_position(new_state)
 
-        printer.print_state(new_state)
+        printer.print_state(new_state, agent_position)
         printer.print_depth_limit()
 
         initial_state = new_state
