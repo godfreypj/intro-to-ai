@@ -162,6 +162,7 @@ if result is None:
     print("Goal state not found before depth limit of 10 reached.")
 else:
     print("Actions to reach the goal state:")
+    print("Number of Actions:", len(result))
     for action in result:
         new_state = agent.apply_action(initial_state, action)
         agent_position = agent.find_agent_position(new_state)
