@@ -6,7 +6,7 @@ The puzzle is then passed to both solvers. The result is passed back and
 displayed for the user.
 """
 import sys
-from utils.successor import is_assignment_legal
+from board import Board
 
 if len(sys.argv) < 2:
     print("Please provide a Sudoku puzzle file as an argument.")
@@ -16,21 +16,19 @@ PUZZLE_FILE = sys.argv[1]
 
 try:
     with open(PUZZLE_FILE, "r", encoding="utf-8") as file:
-        # Read in the argument
-        puzzle_content = file.readlines()
-
-    # Convert puzzle_content to a 2D list (board) and create initial_values data structure
-    board = []
-    initial_values = []
-    for line in puzzle_content:
-        row = [char for char in line.strip() if char != " "]
-        board.append(row)
-        initial_row = [char != "-" for char in row]
-        initial_values.append(initial_row)
+        board = Board(PUZZLE_FILE)
 
     # Check assignment legality and print puzzle content
-    print(is_assignment_legal(board, initial_values, 4, 0, "3"))
-    print(board)
+    board.display()
+    if board.update_board(4, 2, "A"):
+        print("Legal move!")
+        board.display()
+    print("Not a legal move")
+    board.display()
+
+    if board.goal_test():
+        print("puzzle solved!")
+    print("not done yet...")
 
 except FileNotFoundError:
     print("File not found:", PUZZLE_FILE)
