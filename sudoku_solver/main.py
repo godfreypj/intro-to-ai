@@ -7,6 +7,9 @@ displayed for the user.
 """
 import sys
 from board import Board
+from uninformed_agent import UninformedAgent
+
+sys.setrecursionlimit(100000)
 
 if len(sys.argv) < 2:
     print("Please provide a Sudoku puzzle file as an argument.")
@@ -18,17 +21,27 @@ try:
     with open(PUZZLE_FILE, "r", encoding="utf-8") as file:
         board = Board(PUZZLE_FILE)
 
-    # Check assignment legality and print puzzle content
-    board.display()
-    if board.update_board(4, 2, "A"):
-        print("Legal move!")
+    try:
+        # Check assignment legality and print puzzle content
+        print("==__== ... Dumb Agent attempt to solve ... ==__==\n")
+        print("Board: \n")
         board.display()
-    print("Not a legal move")
-    board.display()
-
-    if board.goal_test():
-        print("puzzle solved!")
-    print("not done yet...")
+        print("Set: \n")
+        print(board.get_variable_set())
+        sys.stdout.write("\r            \n")
+        un_agent = UninformedAgent(board)
+        if un_agent.solve():
+            board.display()
+            print("Solved!")
+        else:
+            print("Unsolvable")
+            board.display()
+    except RecursionError:
+        # Clear the blinking cursor
+        sys.stdout.write("\r            \n")
+        print("Recursion error occurred")
+        print("Current state of the board:")
+        board.display()
 
 except FileNotFoundError:
     print("File not found:", PUZZLE_FILE)

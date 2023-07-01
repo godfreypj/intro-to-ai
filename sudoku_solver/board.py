@@ -28,7 +28,9 @@ class Board:
             self.puzzle.append(row)
             initial_row = [char != "-" for char in row]
             self.initial_values.append(initial_row)
-            self.variable_set.update(row)
+            for char in row:
+                if char != "-":
+                    self.variable_set.add(char)
 
     def get_initial_values(self):
         "Initial values of the puzzle are immutable, lets keep track of them"
@@ -44,10 +46,10 @@ class Board:
 
     def update_board(self, row, col, value):
         "Update the board with the given value"
-        if self.is_assignment_legal(row, col, value):
-            self.puzzle[row][col] = value
-            return True
-        return False
+        if value != "-" and not self.is_assignment_legal(row, col, value):
+            return False
+        self.puzzle[row][col] = value
+        return True
 
     def goal_test(self):
         "Check if the board is in a complete state"

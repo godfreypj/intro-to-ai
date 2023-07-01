@@ -1,3 +1,5 @@
 .vscode/settings.json
 *.cpython-311.pyc
 *.pyc
+sudoku_solver/utils/__pycache__/successor.cpython-311.pyc
+sudoku_solver/__pycache__/board.cpython-311.pyc
