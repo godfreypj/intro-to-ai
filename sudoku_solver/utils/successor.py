@@ -25,11 +25,12 @@ def is_assignment_legal(self, row, col, value):
         if board_row != row and str(board_values[col]).upper() == value:
             return False
 
-    # Check quadrant (fixed 4x4 size)
-    start_row = (row // 4) * 4
-    start_col = (col // 4) * 4
-    for quadrant_row in range(start_row, start_row + 4):
-        for quadrant_col in range(start_col, start_col + 4):
+    # Check quadrant
+    quadrant_size = int(len(self.puzzle) ** 0.5)
+    start_row = (row // quadrant_size) * quadrant_size
+    start_col = (col // quadrant_size) * quadrant_size
+    for quadrant_row in range(start_row, start_row + quadrant_size):
+        for quadrant_col in range(start_col, start_col + quadrant_size):
             if (quadrant_row != row or quadrant_col != col) and str(
                 self.puzzle[quadrant_row][quadrant_col]
             ).upper() == value:

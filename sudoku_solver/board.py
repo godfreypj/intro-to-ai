@@ -9,25 +9,34 @@ from utils.successor import is_assignment_legal
 
 
 class Board:
-    "Super Sudoku board object"
+    """Super Sudoku board object.
+    Attributes: puzzle, initial_values, variables_set
+    Functions: getters/setters, update_board, goal_test
+    is_assignment_legal, display.
+    """
 
     def __init__(self, puzzle_file):
         with open(puzzle_file, "r", encoding="utf-8") as file:
             # Read in the argument
             puzzle_content = file.readlines()
 
-        # Convert puzzle_content to a 2D list (board) and create initial_values data structure
         self.puzzle = []
         self.initial_values = []
+        self.variable_set = set()
         for line in puzzle_content:
             row = [char for char in line.strip() if char != " "]
             self.puzzle.append(row)
             initial_row = [char != "-" for char in row]
             self.initial_values.append(initial_row)
+            self.variable_set.update(row)
 
     def get_initial_values(self):
         "Initial values of the puzzle are immutable, lets keep track of them"
         return self.initial_values
+
+    def get_variable_set(self):
+        "16 unique characters for this puzzle"
+        return self.variable_set
 
     def get_puzzle(self):
         "Returns the current state of the puzzle"
