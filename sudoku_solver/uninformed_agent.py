@@ -11,6 +11,7 @@ class UninformedAgent:
 
     def __init__(self, board):
         self.board = board
+        self.action_count = 0
 
     def solve(self):
         "Solves the Sudoku puzzle using backtracking."
@@ -31,7 +32,9 @@ class UninformedAgent:
             return self.dfs(next_row, next_col)
 
         for value in self.board.variable_set:
-            if self.board.update_board(row, col, value):
+            if self.board.is_assignment_legal(row, col, value):
+                self.action_count += 1
+                self.board.update_board(row, col, value)
                 if self.dfs(next_row, next_col):
                     return True
                 self.board.update_board(row, col, "-")

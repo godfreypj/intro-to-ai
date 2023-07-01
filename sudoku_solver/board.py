@@ -46,8 +46,6 @@ class Board:
 
     def update_board(self, row, col, value):
         "Update the board with the given value"
-        if value != "-" and not self.is_assignment_legal(row, col, value):
-            return False
         self.puzzle[row][col] = value
         return True
 

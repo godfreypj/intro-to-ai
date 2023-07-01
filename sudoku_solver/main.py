@@ -6,6 +6,7 @@ The puzzle is then passed to both solvers. The result is passed back and
 displayed for the user.
 """
 import sys
+import time
 from board import Board
 from uninformed_agent import UninformedAgent
 
@@ -22,22 +23,27 @@ try:
         board = Board(PUZZLE_FILE)
 
     try:
-        # Check assignment legality and print puzzle content
+        # Give user some feedback; time and actions taken
         print("==__== ... Dumb Agent attempt to solve ... ==__==\n")
         print("Board: \n")
         board.display()
-        print("Set: \n")
+        print("\nSet: \n")
         print(board.get_variable_set())
         sys.stdout.write("\r            \n")
         un_agent = UninformedAgent(board)
+        start_time = time.time()
         if un_agent.solve():
             board.display()
             print("Solved!")
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"Elapsed time: {elapsed_time:.2f} seconds")
+            print(f"Action count: {un_agent.action_count}")
         else:
             print("Unsolvable")
             board.display()
+
     except RecursionError:
-        # Clear the blinking cursor
         sys.stdout.write("\r            \n")
         print("Recursion error occurred")
         print("Current state of the board:")
@@ -46,6 +52,3 @@ try:
 except FileNotFoundError:
     print("File not found:", PUZZLE_FILE)
     sys.exit(1)
-
-# Process the puzzle_content and solve the Sudoku puzzle
-# ...
