@@ -33,16 +33,33 @@ class Board:
                     self.variable_set.add(char)
 
     def get_initial_values(self):
-        "Initial values of the puzzle are immutable, lets keep track of them"
+        "Initial values of the puzzle are immutable, lets keep track of them."
         return self.initial_values
 
     def get_variable_set(self):
-        "16 unique characters for this puzzle"
+        "16 unique characters for this puzzle."
         return self.variable_set
 
-    def get_puzzle(self):
-        "Returns the current state of the puzzle"
-        return self.puzzle
+    def get_row(self, row):
+        "Returns the values in the specified row."
+        return self.puzzle[row]
+
+    def get_column(self, col):
+        "Returns the values in the specified column."
+        return [self.puzzle[row][col] for row in range(len(self.puzzle))]
+
+    def get_quadrant(self, row, col):
+        "Returns the values in the box that contains the given cell."
+        size = int(len(self.puzzle) ** 0.5)  # Assuming the board is a square
+        box_row = (row // size) * size
+        box_col = (col // size) * size
+
+        box_values = []
+        for quadrant_row in range(box_row, box_row + size):
+            for quadrant_col in range(box_col, box_col + size):
+                box_values.append(self.puzzle[quadrant_row][quadrant_col])
+
+        return box_values
 
     def update_board(self, row, col, value):
         "Update the board with the given value"
