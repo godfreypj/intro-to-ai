@@ -2,3 +2,4 @@
 *.cpython-311.pyc
 *.pyc
 */__pycache__/*
+sudoku_solver/__pycache__/board.cpython-311.pyc
