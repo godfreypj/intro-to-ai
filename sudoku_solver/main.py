@@ -1,13 +1,15 @@
 """
 Module: main
 Description: main py file, kicks off the program by reading in the given text file
-argument. We also keep track of initial values because those are immutable.
-The puzzle is then passed to both solvers. The result is passed back and
-displayed for the user.
+argument.
+Informed agent gets all the time it wants to solve the puzzle, provided it does
+not cause a Recursion error. Uninformed agent gets two minutes. If the informed
+agent deems the puzzle unsolve-able the app cuts short and returns. Stats in the
+form of time and actions taken & the completed board are displaye for the user.
 """
 import sys
-import time
 from board import Board
+from utils.timer import Timer
 from informed_agent import InformedAgent
 from uninformed_agent import UninformedAgent
 
@@ -21,35 +23,63 @@ PUZZLE_FILE = sys.argv[1]
 
 try:
     with open(PUZZLE_FILE, "r", encoding="utf-8") as file:
-        board = Board(PUZZLE_FILE)
+        un_agent_board = Board(PUZZLE_FILE)
+        agent_board = Board(PUZZLE_FILE)
 
     try:
-        # Give user some feedback; time and actions taken
-        print("==__== ... Agent attempt to solve ... ==__==\n")
-        print("Board: \n")
-        board.display()
+        # Provide set and initial board for user
+        print("\n==__== ... Agents attempt to solve ... ==__==\n")
+        print("Initial Board: \n")
+        un_agent_board.display()
         print("\nSet: \n")
-        print(board.get_variable_set())
-        sys.stdout.write("\r            \n")
-        # un_agent = UninformedAgent(board)
-        agent = InformedAgent(board)
-        start_time = time.time()
+        print(sorted(list(un_agent_board.get_variable_set())))
+        print("\nBoth agents attempting to solve the board ... \n")
+
+        # Instantiate our agents, start a timer
+        un_agent = UninformedAgent(un_agent_board)
+        un_timer = Timer()
+        un_timer.start()
+        agent = InformedAgent(agent_board)
+        agent_timer = Timer()
+        agent_timer.start()
+
         if agent.solve():
-            board.display()
-            print("Solved!")
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-            print(f"Elapsed time: {elapsed_time:.2f} seconds")
-            print(f"Action count: {agent.action_count}")
+            agent_timer.stop()
+            if un_agent.solve():
+                un_timer.stop()
+                un_agent_board.display()
+                print("\nSolved by both agents!\n")
+                print("Stats: \n")
+                print("Uninformed Agent:")
+                print(f"Elapsed time: {un_timer.get_elapsed_time():.2f} seconds")
+                print(f"Action count: {un_agent.action_count}")
+                print("---------")
+                print("Informed Agent:")
+                print(f"Elapsed time: {agent_timer.get_elapsed_time():.2f} seconds")
+                print(f"Action count: {agent.action_count}")
+            else:
+                if un_timer.get_elapsed_time() > 120:
+                    agent_board.display()
+                    print("Uninformed agent unable to solve in less than 2 minutes\n")
+                    print("Solved by informed agent!\n")
+                    print("Stats: \n")
+                    print(f"Elapsed time: {agent_timer.get_elapsed_time():.2f} seconds")
+                    print(f"Action count: {agent.action_count}")
+                else:
+                    print("Unsolvable")
+                    print("Current state of the board:\n")
+                    un_agent_board.display()
         else:
             print("Unsolvable")
-            board.display()
+            print("Current state of the board:\n")
+            un_agent_board.display()
 
     except RecursionError:
         sys.stdout.write("\r            \n")
-        print("Recursion error occurred")
-        print("Current state of the board:")
-        board.display()
+        print("One or both agents unable to solve without Recursion Error")
+        print("Current state of the board:\n")
+        agent.display()
+
 
 except FileNotFoundError:
     print("File not found:", PUZZLE_FILE)

@@ -77,6 +77,6 @@ class Board:
     def display(self):
         "Display the current state of the board"
         for row in self.puzzle:
-            print(" ".join(row))
+            print("\t" + "  ".join(row))
 
     is_assignment_legal = is_assignment_legal
