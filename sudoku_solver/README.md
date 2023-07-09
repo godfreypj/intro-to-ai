@@ -36,7 +36,7 @@
 - Keep track of the relative effectiveness of both agents:
   - count of total variable assignements
   - running time to solve
-
+- Puzzles 1-7 were included with the project, 8 & 9 were added by me
 <hr><hr>
 
 ## Quick Start
