@@ -27,7 +27,7 @@ try:
             agent.display()
             agent_timer.stop()
             # Display stats to the user
-            print(f"TIME: {agent_timer.get_elapsed_time():.2f}")
+            print(f"\nTIME: {agent_timer.get_elapsed_time():.2f}")
             print("\nBeep boop ... solved! :)\n")
 
 

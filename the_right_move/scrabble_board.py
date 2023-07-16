@@ -30,6 +30,7 @@ class ScrabbleBoard:
 
     def display(self):
         "Returns a nicely formatted version of the current board state"
+        print("BOARD:")
         print("┏" + "━━━" * len(self.board) + "┓")
         print("┃", end="")
         for cell in self.board:
