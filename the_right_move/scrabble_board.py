@@ -3,7 +3,8 @@ Module: The Board
 Description: The Scrabble board to be solved. This is immutable and always
 the same for every instance of our Agent. In fact, it's not even a whole
 scrabble board because why waste the memory? The starting rack is 7 tiles,
-so the board is just the inner 7 Cells of a standard Scrabble Board
+the first move can only be horizontal, so the board is just the middle row
+of a standard Scrabble Board
 """
 
 
@@ -11,22 +12,21 @@ class ScrabbleBoard:
     "Obj representation of the inner 7 tiles of a Scrabble board"
 
     def __init__(self):
-        self.board = [["X" for _ in range(7)] for _ in range(7)]
+        self.board = ["X"] * 13
 
     def __iter__(self):
         return iter(self.board)
 
-    def get_cell(self, row, col):
+    def get_cell(self, row):
         "Return the contents of a given cell(row,col)"
-        return self.board[row][col]
+        return self.board[row]
 
-    def set_cell(self, row, col, value):
+    def set_cell(self, row, value):
         "Set the contents of a given cell(row,col) with a given value"
-        self.board[row][col] = value
+        self.board[row] = value
 
     def display(self):
         "Returns a nicely formatted version of the current board state"
         for row in self.board:
-            for cell in row:
-                print(f"{cell:2}", end="")
-            print()
+            print(f"{row:2}", end="")
+        print()
