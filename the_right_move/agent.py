@@ -24,7 +24,8 @@ class Agent(scrabble_board.ScrabbleBoard):
 
     def display_rack(self):
         "Print out the state of the rack"
-        rack_str = ""
-        for tile in self.rack:
-            rack_str += f"{tile:2}"
-        print(f"\nRACK: {rack_str}")
+        rack_str = " ".join(f"[{tile}]" for tile in self.rack)
+        print("\nRACK:")
+        print(" ╔" + "═" * (len(rack_str) + 2) + "╗")
+        print(" ║" + rack_str.center(len(rack_str) + 2) + "║")
+        print(" ╚" + "═" * (len(rack_str) + 2) + "╝")

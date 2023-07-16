@@ -17,6 +17,9 @@ class ScrabbleBoard:
     def __iter__(self):
         return iter(self.board)
 
+    def __len__(self):
+        return len(self.board)
+
     def get_cell(self, row):
         "Return the contents of a given cell(row,col)"
         return self.board[row]
@@ -27,6 +30,9 @@ class ScrabbleBoard:
 
     def display(self):
         "Returns a nicely formatted version of the current board state"
-        for row in self.board:
-            print(f"{row:2}", end="")
-        print()
+        print("┏" + "━━━" * len(self.board) + "┓")
+        print("┃", end="")
+        for cell in self.board:
+            print(f" {cell} ", end="")
+        print("┃")
+        print("┗" + "━━━" * len(self.board) + "┛")
