@@ -3,6 +3,7 @@ Module: Agent that will solve for the best initial move in a game of scrabble.
 Given the Board and a Rack the agent will provide the result and statistics
 """
 import scrabble_board
+import utils.successor as successor
 
 
 class Agent(scrabble_board.ScrabbleBoard):
@@ -15,7 +16,15 @@ class Agent(scrabble_board.ScrabbleBoard):
 
     def solve(self):
         "TODO: Solve the problem"
-        return
+
+        # Decide starting square
+        square = 5
+        # Place word
+        for letter in self.rack:
+            self.board.set_cell(square, letter)
+            square += 1
+        # Calculate
+        return successor.calculator(self.rack, 5)
 
     def display(self):
         "Print out the state of the board and the rack"
