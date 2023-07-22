@@ -24,7 +24,7 @@ try:
             agent_timer.start()
             # Display the current state of the board and the rack, stop time
             print("Beep Boop ... solving ...   *************************\n")
-            print(agent.solve())
+            print(f"Score: {agent.solve()}")
             agent.display()
             agent_timer.stop()
             # Display stats to the user
