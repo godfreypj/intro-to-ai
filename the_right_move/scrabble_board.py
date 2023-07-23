@@ -20,10 +20,6 @@ class ScrabbleBoard:
     def __len__(self):
         return len(self.board)
 
-    def get_cell(self, square):
-        "Return the contents of a given square"
-        return self.board[square]
-
     def set_cell(self, square, value):
         "Set the contents of a given square with a given value"
         self.board[square] = value

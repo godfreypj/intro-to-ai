@@ -50,13 +50,17 @@ def calculator(word, starting_square):
     return total_points
 
 
-def estimate_score(rack):
+def estimate_score(word):
     "Given a rack with a word on it, return the estimated score"
-    letter_scores = [scores.get(letter.upper(), 0) for letter in rack]
+    letter_scores = [scores.get(letter.upper(), 0) for letter in word]
 
     # Double the letter with the highest score
     max_score = max(letter_scores)
     estimated_points = sum(letter_scores) + max_score
+
+    # Add 50 for using 7 letters
+    if len(word) > 6 and "_" not in word:
+        estimated_points += 50
 
     return estimated_points
 
