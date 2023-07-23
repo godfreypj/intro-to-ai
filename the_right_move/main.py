@@ -17,19 +17,21 @@ try:
     # Iterate over our given file, each line is a rack
     with open(RACK_FILE, "r", encoding="utf-8") as file:
         for line in file:
-            rack_list = list(line.strip())
             # Instantiate an agent with our rack list, start timer
+            rack_list = list(line.strip())
             agent = Agent(rack_list)
             agent_timer = Timer()
             agent_timer.start()
-            # Display the current state of the board and the rack, stop time
-            print("Beep Boop ... solving ...   *************************\n")
+
+            # Solve the rack, report the stats
+            print("\n\nBeep Boop ... solving ...   ***************************\n")
             print(f"Score: {agent.solve()}")
-            agent.display()
             agent_timer.stop()
+            agent.display()
+
             # Display stats to the user
             print(f"\nTIME: {agent_timer.get_elapsed_time():.2f}")
-            print("\nBeep boop ... solved! :)\n")
+            print("\nBeep boop ... solved! :) ... **************************\n")
 
 
 except FileNotFoundError:

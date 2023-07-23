@@ -1,7 +1,8 @@
 """
 Module: TrieGuy
 Description: It's called TrieGuy because trueguy.py rhymes and its funny.
-This is a trie tree, used to search our scrabble dictionary."""
+This is a trie tree, used to search our scrabble dictionary.
+"""
 
 
 class TrieNode:

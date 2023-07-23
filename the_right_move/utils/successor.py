@@ -1,7 +1,8 @@
 """
 Module: Successor
-Description: The successor function will make our legal placement and 
-return the calculation. It's made up of several utility functions.
+Description: The successor module has many utility functions for our agent;
+it will generate the anagrams, estimate scores, determine legality of moves,
+find the highest scoring placement of a word and calculate a moves score.
 """
 
 # pylint: disable=import-error
@@ -29,21 +30,24 @@ def is_placement_legal(word, starting_square):
     return True
 
 
+# Lets instantiate this only once.
 double_letter_squares = {2, 10}
 
 
 def calculator(word, starting_square):
-    "Given a board with a word on it, return the score"
+    "Given a word and a starting square, determine final score"
     letter_scores = [scores.get(letter.upper(), 0) for letter in word]
 
+    # Iterate over the word, find premium squares
     for index, letter in enumerate(word):
         if starting_square in double_letter_squares:
             letter_scores[index] *= 2
         starting_square += 1
 
-    # Calculate the total score using the built-in sum() function
+    # Calculate the total score
     total_points = sum(letter_scores)
 
+    # Add 50 points if all 7 letters are used
     if len(word) == 7:
         total_points += 50
 
@@ -58,27 +62,29 @@ def estimate_score(word):
     max_score = max(letter_scores)
     estimated_points = sum(letter_scores) + max_score
 
-    # Add 50 for using 7 letters
-
     return estimated_points
 
 
 def generate_anagrams(rack, dictionary):
-    """Takes our rack and the scrabble dictionary and returns a list
-    of valid anagrams"""
+    "Takes our rack and the scrabble dictionary and returns anagrams"
 
+    # Instantiate prefix tree and read in the official scrabble dictionary
     trie = TrieGuy()
     trie.build_from_list(dictionary)
 
+    # Estimate the score of the rack
     max_score = estimate_score(rack)
 
+    # Recursively find anagrams
     def backtrack(letters, path):
         word = "".join(path)
         if len(word) > 1 and trie.search(word):
             score = estimate_score(word)
+            # Only add high scoring words
             if score >= max_score * 0.4:
                 anagrams.append((word))
 
+        # Handle blank tiles (wildcards)
         for i, char in enumerate(letters):
             if char == "_":
                 for common_char in "AEIOULNRDBCGMFHPSVWYJQKZ":

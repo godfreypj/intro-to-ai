@@ -1,6 +1,7 @@
 """
-Module: Agent that will solve for the best initial move in a game of scrabble.
-Given the Board and a Rack the agent will provide the result and statistics
+Module: Agent 
+Description: Solve for the best initial move in a game of scrabble.
+Given a Rack the agent will provide the result and statistics
 """
 import scrabble_board
 from utils.successor import generate_anagrams
@@ -17,7 +18,7 @@ class Agent(scrabble_board.ScrabbleBoard):
         self.rack = rack
 
     def solve(self):
-        "Solve"
+        "Solve by generating anagrams and estimating the highest score"
 
         # Generate our anagram list
         anagrams = generate_anagrams(self.rack, dictionary)
@@ -32,7 +33,7 @@ class Agent(scrabble_board.ScrabbleBoard):
             # Get the score and optimal starting square for the current word
             score, starting_square = successor.find_best_move(word)
 
-            # Check if the current word's score is higher than the best score found so far
+            # Determine the word that produces the highest score
             if score > best_score:
                 best_score = score
                 best_starting_square = starting_square
