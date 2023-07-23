@@ -59,8 +59,6 @@ def estimate_score(word):
     estimated_points = sum(letter_scores) + max_score
 
     # Add 50 for using 7 letters
-    if len(word) > 6 and "_" not in word:
-        estimated_points += 50
 
     return estimated_points
 
@@ -78,7 +76,7 @@ def generate_anagrams(rack, dictionary):
         word = "".join(path)
         if len(word) > 1 and trie.search(word):
             score = estimate_score(word)
-            if score >= max_score * 0.8:
+            if score >= max_score * 0.4:
                 anagrams.append((word))
 
         for i, char in enumerate(letters):
